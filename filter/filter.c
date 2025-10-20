@@ -131,5 +131,4 @@ int main (int argc, char **argv)
 	free(s);
 	//free(s_final);
 	return 0;
-
 }

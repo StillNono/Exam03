@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-\
+
 
 
 #define BUFFER_SIZE 1024
@@ -81,22 +81,50 @@ char *get_line(char *line)
     else
         get_line = malloc(i + 1);
     i = 0;
-    while(line[i])
+    while(line[i] && line[i] != '\n' && line[i] != '\0')
     {
         get_line[i] = line[i];
         i++;
     }
     if (line[i] == '\n')
-        get_line[i] = '\n';
+        get_line[i++] = '\n';
+    get_line[i++] = '\0';
     return get_line;
 }
+
+size_t	ft_strlen(const char *str)
+{
+	size_t	size;
+
+	size = 0;
+	if (str == NULL)
+		return (size);
+	while (str[size] != '\0')
+		size++;
+	return (size);
+}
+
+char	*ft_strdup(const char *s)
+{
+	size_t	sz;
+	char	*str;
+
+	sz = ft_strlen((char *)s);
+	str = (char *)malloc(sizeof(char) * (sz + 1));
+	if (str == NULL)
+		return (NULL);
+	while (*s)
+		*str++ = *s++;
+	*str = '\0';
+	return (str - sz);
+}
+
 
 char *rest_line(char *line)
 {
     int i = 0;
     char *temp;
     char *rest;
-
 
     while (line[i] != '\n' && line[i])
         i++;
@@ -106,12 +134,10 @@ char *rest_line(char *line)
         return NULL;
     }
     temp = line + i + 1;
-    rest = strdup(temp);
+    rest = ft_strdup(temp);
     free(line);
     return rest;
 }
-
-
 
 char *get_next_line(int fd)
 {
@@ -120,9 +146,21 @@ char *get_next_line(int fd)
 
     if (fd < 0 || BUFFER_SIZE <= 0)
         return NULL;
-    line = read_line(fd, line);
+    if(!line)
+        line = read_line(fd, line);
     if(!line)
         return NULL;
     return_line = get_line(line);
     line = rest_line(line);
+    return return_line;
+}
+
+
+int main()
+{
+    int fd = open("teste.txt", O_RDONLY);
+    char *test = get_next_line(fd);
+    printf("%s", test);
+    printf("1");
+    printf("2");
 }
