@@ -11,11 +11,12 @@ void print_arr(int *aux_array, int tam)
     while (i < tam)
     {
         printf("%d", aux_array[i]);
-        if (i != tam -1)
+        if (i == tam -1 )
+            printf("\n");
+        else
             printf(" ");
         i++;
     }
-    printf("\n");
     
 }
 
@@ -44,12 +45,11 @@ int main(int ac, char **av)
     array = malloc(tam * sizeof(int));
     int *aux_array = malloc(tam*sizeof(int));
     if (alvo == 0)
-        write(1, "\n", 1);
+        printf("\n");
     while (i < tam)
     {
         array[i] = atoi(av[i + 2]);
         i++;
     }
     powerset(alvo, array, tam, aux_array, 0, 0, 0);
-
 }
